@@ -127,11 +127,6 @@ elif page == "Taxi Model":
     "distance_km",
     options=[1, 2, 3, 4, 5, 6,7,8]
     )
-    # pickup_minute
-    input_data['pickup_minute'] = st.selectbox(
-    "pickup_minute ",
-    options=[1, 2, 3, 4, 5, 6,7,8]
-    )
     
 # 💳 Credit Model Page
 
