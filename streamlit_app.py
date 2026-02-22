@@ -17,9 +17,9 @@ page_bg = """
     color: #333333;             /* النص العادي */
 }
 
-/* Sidebar خلفية سوداء */
+/* Sidebar  */
 [data-testid="stSidebar"] {
-    background-color: #000000;
+    background-color: #89CFF0;
 }
 
 /* كل النصوص داخل sidebar */
