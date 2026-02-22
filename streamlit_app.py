@@ -8,6 +8,28 @@ page = st.sidebar.radio(
     "Navigation",
     ["Home","Taxi Model","Credit Model"]
 )
+page_bg = """
+<style>
+    .stApp {
+        background-color: #FFF8E7;  /* خلفية الصفحة */
+        color: #333333;             /* لون النص */
+    }
+    .css-1d391kg {                  /* sidebar background */
+        background-color: #D0E8F2;
+    }
+    .stButton>button {
+        background-color: #FF8C42;
+        color: white;
+        border-radius: 8px;
+        height: 40px;
+        width: 100%;
+    }
+    h1, h2, h3, .css-1v0mbdj-StreamlitMarkdown {  /* العناوين */
+        color: #1E3A8A;
+    }
+</style>
+"""
+st.markdown(page_bg, unsafe_allow_html=True)
 if page == "Home":
     st.title("The Survivors ⚡")
     st.info('Welcome to Survivors Team App')
