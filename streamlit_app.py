@@ -14,9 +14,6 @@ page = st.sidebar.radio(
     ["Taxi Model", "Credit Model"]
 )
 
-model1 = load_model("taxi_model.pkl")
-
-
 # 🚕 Taxi Model Page
 
 if page == "Taxi Model":
