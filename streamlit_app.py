@@ -105,7 +105,7 @@ elif page == "Taxi Model":
     # trip_duration
     input_data['trip_duration'] = st.selectbox(
     "trip_duration ",
-    options=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0,7.0,8.0
+    options=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0,7.0,8.0]
     )
     # pickup_month
     input_data['pickup_month'] = st.selectbox(
