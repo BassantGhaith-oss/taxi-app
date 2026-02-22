@@ -82,7 +82,7 @@ elif page == "Taxi Model":
     # pickup_latitude
     input_data['pickup_latitude'] = st.selectbox(
     "Pickup Latitude",
-    options=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0,7.0,8.0
+    options=[1.0, 2.0, 3.0, 4.0, 5.0, 6.0,7.0,8.0]
     )
     
     # dropoff_longitude
