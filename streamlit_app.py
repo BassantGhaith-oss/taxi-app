@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import joblib
 from streamlit_option_menu import option_menu
-pip install streamlit-option-menu
 
 # ----------------- Title -----------------
 st.title('The Survivors')
