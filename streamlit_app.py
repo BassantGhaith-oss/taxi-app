@@ -8,6 +8,7 @@ page = st.sidebar.radio(
     "Navigation",
     ["Home","Taxi Model","Credit Model"]
 )
+# ---------- CSS للألوان ----------
 page_bg = """
 <style>
 /* الخلفية الرئيسية */
@@ -19,7 +20,13 @@ page_bg = """
 /* Sidebar */
 [data-testid="stSidebar"] {
     background-color: #000000;  /* أسود */
-    color: #FFF8E7;             /* النص أصفر فاتح */
+}
+
+/* كل النصوص داخل sidebar (labels, radio, checkbox) */
+[data-testid="stSidebar"] label, 
+[data-testid="stSidebar"] .stRadio > div, 
+[data-testid="stSidebar"] .stCheckbox > label {
+    color: #FFF8E7 !important;  /* أصفر فاتح */
 }
 
 /* أزرار التطبيق */
@@ -39,7 +46,6 @@ h1, h2, h3, .css-1v0mbdj-StreamlitMarkdown {
 </style>
 """
 st.markdown(page_bg, unsafe_allow_html=True)
-
 
 if page == "Home":
     st.title("The Survivors ⚡")
