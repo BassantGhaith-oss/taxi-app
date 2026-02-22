@@ -24,6 +24,7 @@ if page == "Taxi Model":
 # 💳 Credit Model Page
 
 elif page == "Credit Model":
+    st.header("Cre.")
     model2 = joblib.load("best_random_forest_model.pkl")
 
 
