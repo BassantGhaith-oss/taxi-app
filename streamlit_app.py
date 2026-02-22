@@ -8,7 +8,7 @@ import numpy as np
 # headlines and welcom message
 
 st.title('The Survivors')
-st.info('Welcome to Survivors Team's App')
+st.info('Welcome to Survivors Team is App')
 
  # make some arrangements
  
