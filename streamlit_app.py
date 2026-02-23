@@ -146,7 +146,7 @@ elif page == "Taxi Model":
     input_data['RatecodeID_5'] = 1 if ratecode == "5" else 0
     
     input_df = pd.DataFrame([input_data])
-    st.write(df)
+    st.write(input_df)
     st.write("Input DataFrame columns:", input_df.columns.tolist())
     if st.button("Predict Fare"):
         prediction = model1.predict(input_df)
