@@ -225,3 +225,5 @@ elif page == "Visualization":
         ax3.tick_params(axis='x', rotation=45, colors='white')
         ax3.tick_params(axis='y', colors='white')
         st.pyplot(fig3)
+
+     
