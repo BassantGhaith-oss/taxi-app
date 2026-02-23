@@ -168,24 +168,32 @@ elif page == "Taxi Model":
     if st.button("Predict Fare"):
         prediction = model1.predict(input_df)
         st.success(f"Predicted Fare = ${prediction[0]:.2f}")
-        
-# ---------- Visualization Page ----------
 elif page == "Visualization":
     st.info("Model Visualization — Monte Carlo Simulation")
 
-    if data.empty:
+    if data is None:
         st.warning("Dataset not loaded! Please load 'small_data.csv' first to see the plots.")
     else:
+        df = data.copy()  # نشتغل على نسخة
+
+        # ---------- تأكد من وجود الأعمدة ----------
+        required_cols = {
+            'trip_distance': (0, 20),
+            'trip_duration': (1, 20),
+            'fare_amount': (5, 50),
+            'pickup_latitude': (40, 41),
+            'pickup_longitude': (-74, -73)
+        }
+        for col, (low, high) in required_cols.items():
+            if col not in df.columns:
+                df[col] = np.random.uniform(low, high, size=len(df))
+            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(np.random.uniform(low, high, size=len(df)))
+
+        # ---------- Matplotlib Scatter Plots ----------
         plt.style.use('dark_background')
 
-        # ---------- 1️⃣ Trip Distance vs Fare ----------
-        if 'trip_distance' not in data.columns:
-            data['trip_distance'] = np.random.rand(len(data))*50
-        if 'fare_amount' not in data.columns:
-            data['fare_amount'] = np.random.rand(len(data))*50
-
         fig1, ax1 = plt.subplots(figsize=(8,5))
-        ax1.scatter(data['trip_distance'], data['fare_amount'], alpha=0.5, color='#8A2BE2')
+        ax1.scatter(df['trip_distance'], df['fare_amount'], alpha=0.5, color='#8A2BE2')
         ax1.set_title("Trip Distance vs Fare Amount", color='white')
         ax1.set_xlabel("Trip Distance", color='white')
         ax1.set_ylabel("Fare Amount", color='white')
@@ -193,12 +201,8 @@ elif page == "Visualization":
         ax1.tick_params(axis='y', colors='white')
         st.pyplot(fig1)
 
-        # ---------- 2️⃣ Trip Duration vs Fare ----------
-        if 'trip_duration' not in data.columns:
-            data['trip_duration'] = np.random.rand(len(data))*50
-
         fig2, ax2 = plt.subplots(figsize=(8,5))
-        ax2.scatter(data['trip_duration'], data['fare_amount'], alpha=0.5, color='#008080')
+        ax2.scatter(df['trip_duration'], df['fare_amount'], alpha=0.5, color='#008080')
         ax2.set_title("Trip Duration vs Fare Amount", color='white')
         ax2.set_xlabel("Trip Duration", color='white')
         ax2.set_ylabel("Fare Amount", color='white')
@@ -206,11 +210,11 @@ elif page == "Visualization":
         ax2.tick_params(axis='y', colors='white')
         st.pyplot(fig2)
 
-        # ---------- 3️⃣ Fare Distribution Histogram ----------
+        # ---------- Histogram ----------
         bins = [0, 5, 10, 15, 20, 25, 30, 40, 50, 75, 200]
         labels = ['$0–5','$5–10','$10–15','$15–20','$20–25','$25–30','$30–40','$40–50','$50–75','$75+']
-        data['fare_bucket'] = pd.cut(data['fare_amount'], bins=bins, labels=labels)
-        bucket_counts = data['fare_bucket'].value_counts().sort_index()
+        df['fare_bucket'] = pd.cut(df['fare_amount'], bins=bins, labels=labels, include_lowest=True)
+        bucket_counts = df['fare_bucket'].value_counts().sort_index()
 
         fig3, ax3 = plt.subplots(figsize=(8,5))
         ax3.bar(labels, bucket_counts, color='#008080', alpha=0.7)
@@ -221,38 +225,15 @@ elif page == "Visualization":
         ax3.tick_params(axis='y', colors='white')
         st.pyplot(fig3)
 
-        # ---------- 4️⃣ Map Example (Plotly) ----------
-        map_cols = ['pickup_latitude','pickup_longitude','fare_amount']
-        for col in map_cols:
-            if col not in data.columns or data[col].isnull().all():
-                if 'latitude' in col:
-                    data[col] = 40 + np.random.rand(len(data))*0.1
-                elif 'longitude' in col:
-                    data[col] = -74 + np.random.rand(len(data))*0.1
-                else:
-                    data[col] = np.random.rand(len(data))*100
-
-        sample_size = min(5000, len(data))
-        df_map = data.sample(sample_size, random_state=42)
-
+        # ---------- Map ----------
         fig4 = px.scatter_mapbox(
-            df_map,
+            df.sample(min(5000, len(df)), random_state=42),
             lat='pickup_latitude',
             lon='pickup_longitude',
             color='fare_amount',
-            size='fare_amount',
-            size_max=10,
-            opacity=0.7,
+            size_max=4,
+            opacity=0.5,
             zoom=10,
-            mapbox_style='open-street-map',
-            color_continuous_scale=px.colors.cyclical.IceFire
+            mapbox_style='open-street-map'
         )
         st.plotly_chart(fig4, use_container_width=True)
-
-        # ---------- 5️⃣ Heatmap of Correlations ----------
-        numeric_cols = data.select_dtypes(include=np.number).columns
-        if len(numeric_cols) > 1:
-            st.subheader("Correlation Heatmap")
-            fig5, ax5 = plt.subplots(figsize=(10,8))
-            sns.heatmap(data[numeric_cols].corr(), annot=True, fmt=".2f", cmap="coolwarm", ax=ax5)
-            st.pyplot(fig5)
